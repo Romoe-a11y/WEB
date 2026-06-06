@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="resources/assets/favicon.ico">
+<title>Web Development Course Hub</title>
+<style>
+  :root {
+    --bg: #eef4f6;
+    --panel: #ffffff;
+    --ink: #20313c;
+    --muted: #637886;
+    --line: #d5e1e8;
+    --teal: #0f7f79;
+    --blue: #2166a5;
+    --coral: #c85d4a;
+    --amber: #a86e17;
+    --green: #25764a;
+    --soft-teal: #e2f3f1;
+    --soft-blue: #e7f0fa;
+    --soft-coral: #fae8e3;
+    --soft-amber: #fbf0d9;
+    --soft-green: #e5f3ea;
+    --shadow: 0 14px 34px rgba(35, 52, 63, .10);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--ink);
+    background: var(--bg);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  a { color: inherit; }
+  button, input { font: inherit; }
+
+  .shell {
+    width: min(1220px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 24px 0 34px;
+  }
+
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 18px;
+    align-items: stretch;
+    margin-bottom: 18px;
+  }
+
+  .hero-main,
+  .folder-map,
+  .resource-card,
+  .launch-card,
+  .section-panel {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--panel);
+  }
+
+  .hero-main {
+    padding: 22px;
+  }
+
+  .eyebrow {
+    margin: 0 0 8px;
+    color: var(--teal);
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0 0 8px;
+    font-size: clamp(26px, 4vw, 40px);
+    line-height: 1.12;
+  }
+
+  .hero-main p {
+    margin: 0;
+    max-width: 840px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  .folder-map {
+    padding: 18px;
+  }
+
+  .folder-map h2,
+  .section-title h2 {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.25;
+  }
+
+  .tree {
+    margin: 12px 0 0;
+    padding: 0;
+    list-style: none;
+    color: var(--muted);
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  .launch-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .launch-card {
+    display: grid;
+    grid-template-columns: 50px minmax(0, 1fr) auto;
+    gap: 14px;
+    align-items: center;
+    padding: 16px;
+    text-decoration: none;
+    transition: border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+  }
+
+  .launch-card:hover {
+    border-color: var(--teal);
+    box-shadow: var(--shadow);
+    transform: translateY(-1px);
+  }
+
+  .launch-icon {
+    display: grid;
+    place-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    color: #fff;
+    background: var(--teal);
+  }
+
+  .launch-card:nth-child(2) .launch-icon { background: var(--blue); }
+
+  .launch-card h2 {
+    margin: 0 0 4px;
+    font-size: 18px;
+  }
+
+  .launch-card p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .arrow {
+    color: var(--teal);
+    font-size: 24px;
+    font-weight: 900;
+  }
+
+  .toolbar {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) auto auto auto auto;
+    gap: 8px;
+    align-items: center;
+    margin: 0 0 14px;
+  }
+
+  .search {
+    min-height: 42px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    padding: 9px 11px;
+    background: #fff;
+    color: var(--ink);
+  }
+
+  .filter-btn {
+    min-height: 42px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 8px 13px;
+    color: var(--muted);
+    background: #fff;
+    cursor: pointer;
+    font-weight: 800;
+  }
+
+  .filter-btn:hover,
+  .filter-btn.active {
+    color: #fff;
+    border-color: var(--teal);
+    background: var(--teal);
+  }
+
+  .section-panel {
+    padding: 16px;
+    margin-top: 14px;
+  }
+
+  .section-title {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 12px;
+  }
+
+  .section-title p {
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .count-pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 26px;
+    border-radius: 999px;
+    padding: 4px 9px;
+    color: var(--teal);
+    background: var(--soft-teal);
+    font-size: 12px;
+    font-weight: 900;
+    white-space: nowrap;
+  }
+
+  .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .resource-card {
+    display: grid;
+    gap: 10px;
+    padding: 13px;
+  }
+
+  .resource-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .resource-card h3 {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.3;
+  }
+
+  .resource-card p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    min-height: 23px;
+    border-radius: 999px;
+    padding: 3px 8px;
+    font-size: 12px;
+    font-weight: 900;
+    white-space: nowrap;
+  }
+
+  .tag.slides { color: var(--blue); background: var(--soft-blue); }
+  .tag.project { color: var(--green); background: var(--soft-green); }
+  .tag.td { color: var(--coral); background: var(--soft-coral); }
+
+  .link-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .file-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    padding: 7px 10px;
+    color: var(--ink);
+    background: #fff;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  .file-link:hover {
+    border-color: var(--teal);
+    background: #f7fbfb;
+  }
+
+  .empty {
+    display: none;
+    border: 1px dashed #b8c8d1;
+    border-radius: 8px;
+    padding: 18px;
+    color: var(--muted);
+    background: #fff;
+    text-align: center;
+  }
+
+  body.no-results .empty { display: block; }
+
+  @media (max-width: 900px) {
+    .hero,
+    .launch-grid,
+    .resource-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .toolbar {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .search {
+      grid-column: span 2;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .shell {
+      width: min(100% - 20px, 1220px);
+      padding-top: 16px;
+    }
+
+    .toolbar {
+      grid-template-columns: 1fr;
+    }
+
+    .search {
+      grid-column: auto;
+    }
+
+    .launch-card {
+      grid-template-columns: 44px minmax(0, 1fr);
+    }
+
+    .arrow {
+      display: none;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="shell">
+    <section class="hero">
+      <div class="hero-main">
+        <p class="eyebrow">Web Techniques</p>
+        <h1>Web Development Course Hub</h1>
+        <p>Start with the tracker or revision test, then open the exact PDF or Markdown resource you need. Files are grouped by app, course slide deck, 8-week project session, TD practice sheet, and asset.</p>
+      </div>
+      <aside class="folder-map">
+        <h2>Folder Map</h2>
+        <ul class="tree">
+          <li>WEB/</li>
+          <li>  apps/</li>
+          <li>  resources/assets/</li>
+          <li>  resources/pdf/course-slides/</li>
+          <li>  resources/pdf/project-sessions/</li>
+          <li>  resources/pdf/td-sheets/</li>
+          <li>  resources/markdown/course-slides/</li>
+          <li>  resources/markdown/project-sessions/</li>
+          <li>  resources/markdown/td-sheets/</li>
+        </ul>
+      </aside>
+    </section>
+
+    <section class="launch-grid" aria-label="Main apps">
+      <a class="launch-card" href="apps/web_development_progress_tracker.html">
+        <span class="launch-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path><path d="m16 17 2 2 4-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </span>
+        <span>
+          <h2>Progress Tracker</h2>
+          <p>Roadmap grouped by Web concepts, HTML, CSS, PHP, MySQL, auth, AI, and final testing.</p>
+        </span>
+        <span class="arrow" aria-hidden="true">›</span>
+      </a>
+      <a class="launch-card" href="apps/web_development_revision_test.html">
+        <span class="launch-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M8 7h8M8 11h8M8 15h5M5 3h14v18H5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </span>
+        <span>
+          <h2>Revision Test</h2>
+          <p>Timed adaptive quiz with saved progress, scoring, focus areas, and finished-attempt archive.</p>
+        </span>
+        <span class="arrow" aria-hidden="true">›</span>
+      </a>
+    </section>
+
+    <div class="toolbar" aria-label="Resource filters">
+      <input class="search" id="searchInput" type="search" placeholder="Search resources, sessions, topics, or filenames">
+      <button class="filter-btn active" type="button" data-filter="all">All</button>
+      <button class="filter-btn" type="button" data-filter="slides">Slides</button>
+      <button class="filter-btn" type="button" data-filter="project">Project</button>
+      <button class="filter-btn" type="button" data-filter="td">TD</button>
+    </div>
+
+    <div class="empty" id="emptyState">No resources match the current search and filter.</div>
+
+    <section class="section-panel" data-section="slides">
+      <div class="section-title">
+        <div>
+          <h2>Course Slide Decks</h2>
+          <p>Broad Web foundations, PHP basics, advanced PHP CRUD/security, and the Exam Planner overview.</p>
+        </div>
+        <span class="count-pill">4 groups</span>
+      </div>
+      <div class="resource-grid">
+        <article class="resource-card" data-type="slides" data-search="part i web development history internet web html css front-end back-end full-stack">
+          <div class="resource-head"><h3>Part I - Web Development Foundations</h3><span class="tag slides">slides</span></div>
+          <p>Computing history, Internet/Web concepts, front-end/back-end, HTML structure, attributes, styling, colors, and CSS basics.</p>
+          <div class="link-row">
+            <a class="file-link" href="resources/pdf/course-slides/Part_I.pdf">PDF</a>
+            <a class="file-link" href="resources/markdown/course-slides/Part_I.md">Markdown</a>
+          </div>
+        </article>
+        <article class="resource-card" data-type="slides" data-search="part ii php dynamic web projects xampp localhost forms mysql sessions">
+          <div class="resource-head"><h3>Part II - Introduction to PHP</h3><span class="tag slides">slides</span></div>
+          <p>Server-side PHP, XAMPP/WAMP, syntax, variables, control flow, arrays, forms, validation, MySQL, CRUD, and sessions.</p>
+          <div class="link-row">
+            <a class="file-link" href="resources/pdf/course-slides/Part_II.pdf">PDF</a>
+            <a class="file-link" href="resources/markdown/course-slides/Part_II.md">Markdown</a>
+          </div>
+        </article>
+        <article class="resource-card" data-type="slides" data-search="part iii php part 2 mysql crud files sessions cookies security debugging prepared statements">
+          <div class="resource-head"><h3>Part III - Practical PHP Project</h3><span class="tag slides">slides</span></div>
+          <p>CRUD workflow, file structure, includes, sessions, cookies, password safety, prepared statements, debugging, and project checklist.</p>
+          <div class="link-row">
+            <a class="file-link" href="resources/pdf/course-slides/Part_III.pdf">PDF</a>
+            <a class="file-link" href="resources/markdown/course-slides/Part_III.md">Markdown</a>
+          </div>
+        </article>
+        <article class="resource-card" data-type="slides" data-search="exam planner presentation ai powered exam preparation planner crud mysql php ai api">
+          <div class="resource-head"><h3>Exam Planner Presentation</h3><span class="tag slides">slides</span></div>
+          <p>Project objective, CRUD features, module fields, AI planning inputs, schema, tables, and 8-week development plan.</p>
+          <div class="link-row">
+            <a class="file-link" href="resources/pdf/course-slides/exam_planner_presentation.pdf">PDF</a>
+            <a class="file-link" href="resources/markdown/course-slides/exam_planner_presentation.md">Markdown</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-panel" data-section="project">
+      <div class="section-title">
+        <div>
+          <h2>8-Week Project Sessions</h2>
+          <p>Step-by-step build path for the AI-Powered Exam Preparation Planner.</p>
+        </div>
+        <span class="count-pill">8 sessions</span>
+      </div>
+      <div class="resource-grid">
+        <article class="resource-card" data-type="project" data-search="session 1 project introduction environment setup localhost xampp wamp">
+          <div class="resource-head"><h3>Session 1 - Project Introduction and Environment Setup</h3><span class="tag project">project</span></div>
+          <p>Understand the app goal, install WAMP/XAMPP, create the project folder, and load a first localhost page.</p>
+          <div class="link-row"><a class="file-link" href="resources/pdf/project-sessions/session_1.pdf">PDF</a><a class="file-link" href="resources/markdown/project-sessions/session_1.md">Markdown</a></div>
+        </article>
+        <article class="resource-card" data-type="project" data-search="session 2 database design mysql initialization users modules study plans primary key foreign key">
+          <div class="resource-head"><h3>Session 2 - Database Design and MySQL Initialization</h3><span class="tag project">project</span></div>
+          <p>Create the exam_planner database, users/modules tables, relationships, and sample data in phpMyAdmin.</p>
+          <div class="link-row"><a class="file-link" href="resources/pdf/project-sessions/session_2.pdf">PDF</a><a class="file-link" href="resources/markdown/project-sessions/session_2.md">Markdown</a></div>
+        </article>
+        <article class="resource-card" data-type="project" data-search="session 3 registration login system sessions password hash verify logout">
+          <div class="resource-head"><h3>Session 3 - Registration and Login System</h3><span class="tag project">project</span></div>
+          <p>Build registration, login, session management, password hashing, protected pages, and logout.</p>
+          <div class="link-row"><a class="file-link" href="resources/pdf/project-sessions/session_3.pdf">PDF</a><a class="file-link" href="resources/markdown/project-sessions/session_3.md">Markdown</a></div>
+        </article>
+        <article class="resource-card" data-type="project" data-search="session 4 add display modules create read crud insert select">
+          <div class="resource-head"><h3>Session 4 - Add and Display Modules</h3><span class="tag project">project</span></div>
+          <p>Implement Create and Read for module records with forms, INSERT, SELECT, and user ownership.</p>
+          <div class="link-row"><a class="file-link" href="resources/pdf/project-sessions/session_4.pdf">PDF</a><a class="file-link" href="resources/markdown/project-sessions/session_4.md">Markdown</a></div>
+        </article>
+        <article class="resource-card" data-type="project" data-search="session 5 edit delete modules update delete crud cycle">
+          <div class="resource-head"><h3>Session 5 - Edit and Delete Modules</h3><span class="tag project">project</span></div>
+          <p>Complete CRUD with pre-filled edit forms, UPDATE, delete confirmation, DELETE, and ownership checks.</p>
+          <div class="link-row"><a class="file-link" href="resources/pdf/project-sessions/session_5.pdf">PDF</a><a class="file-link" href="resources/markdown/project-sessions/session_5.md">Markdown</a></div>
+        </article>
+        <article class="resource-card" data-type="project" data-search="session 6 dashboard styling user experience css flexbox grid navigation forms responsive">
+          <div class="resource-head"><h3>Session 6 - Dashboard, Styling, and User Experience</h3><span class="tag project">project</span></div>
+          <p>Add dashboard summaries, navigation, consistent form/table styling, and responsive CSS polish.</p>
+          <div class="link-row"><a class="file-link" href="resources/pdf/project-sessions/session_6.pdf">PDF</a><a class="file-link" href="resources/markdown/project-sessions/session_6.md">Markdown</a></div>
+        </article>
+        <article class="resource-card" data-type="project" data-search="session 7 ai integration revision plan api prompt github models hugging face openrouter">
+          <div class="resource-head"><h3>Session 7 - AI Integration for the Revision Plan</h3><span class="tag project">project</span></div>
+          <p>Build a structured prompt from module data, call an AI API, display the 7-day plan, and handle API failures.</p>
+          <div class="link-row"><a class="file-link" href="resources/pdf/project-sessions/session_7.pdf">PDF</a><a class="file-link" href="resources/markdown/project-sessions/session_7.md">Markdown</a></div>
+        </article>
+        <article class="resource-card" data-type="project" data-search="session 8 testing debugging final improvements demo preparation checklist">
+          <div class="resource-head"><h3>Session 8 - Testing, Debugging, and Demo Preparation</h3><span class="tag project">project</span></div>
+          <p>Run the final checklist, fix bugs, clean files, remove debug output, and practice the demo scenario.</p>
+          <div class="link-row"><a class="file-link" href="resources/pdf/project-sessions/session_8.pdf">PDF</a><a class="file-link" href="resources/markdown/project-sessions/session_8.md">Markdown</a></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-panel" data-section="td">
+      <div class="section-title">
+        <div>
+          <h2>TD Practice Sheets</h2>
+          <p>Hands-on exercises for HTML, CSS, PHP, and JavaScript fundamentals.</p>
+        </div>
+        <span class="count-pill">6 sheets</span>
+      </div>
+      <div class="resource-grid">
+        <article class="resource-card" data-type="td" data-search="session 1 td html basic page structure doctype head body tags nesting debugging">
+          <div class="resource-head"><h3>TD 1 - HTML Page Structure</h3><span class="tag td">TD</span></div>
+          <p>HTML skeleton, opening/closing tags, nesting, structural analysis, complete documents, and debugging.</p>
+          <div class="link-row"><a class="file-link" href="resources/pdf/td-sheets/session_1_td.pdf">PDF</a><a class="file-link" href="resources/markdown/td-sheets/session_1_td.md">Markdown</a></div>
+        </article>
+        <article class="resource-card" data-type="td" data-search="session 2 td organizing content html headings paragraphs lists links images tables">
+          <div class="resource-head"><h3>TD 2 - Organizing HTML Content</h3><span class="tag td">TD</span></div>
+          <p>Headings, paragraphs, lists, hyperlinks, images, tables, error spotting, and schedule-table design.</p>
+          <div class="link-row"><a class="file-link" href="resources/pdf/td-sheets/session_2_td.pdf">PDF</a><a class="file-link" href="resources/markdown/td-sheets/session_2_td.md">Markdown</a></div>
+        </article>
+        <article class="resource-card" data-type="td" data-search="session 3 td css styling syntax selectors properties inline internal external">
+          <div class="resource-head"><h3>TD 3 - CSS Styling</h3><span class="tag td">TD</span></div>
+          <p>CSS syntax, selectors, properties, values, styling methods, rendered-output prediction, and CSS debugging.</p>
+          <div class="link-row"><a class="file-link" href="resources/pdf/td-sheets/session_3_td.pdf">PDF</a><a class="file-link" href="resources/markdown/td-sheets/session_3_td.md">Markdown</a></div>
+        </article>
+        <article class="resource-card" data-type="td" data-search="session 4 td css layout box model classes ids specificity page zones">
+          <div class="resource-head"><h3>TD 4 - CSS Layout and Box Model</h3><span class="tag td">TD</span></div>
+          <p>Box-model calculations, classes versus IDs, specificity, page layout zones, and CSS correction drills.</p>
+          <div class="link-row"><a class="file-link" href="resources/pdf/td-sheets/session_4_td.pdf">PDF</a><a class="file-link" href="resources/markdown/td-sheets/session_4_td.md">Markdown</a></div>
+        </article>
+        <article class="resource-card" data-type="td" data-search="session 5 td php dynamic web pages variables echo conditions loops functions debugging">
+          <div class="resource-head"><h3>TD 5 - PHP Dynamic Pages</h3><span class="tag td">TD</span></div>
+          <p>PHP syntax, variables, echo, conditions, loops, output prediction, functions, mixed HTML/PHP, and debugging.</p>
+          <div class="link-row"><a class="file-link" href="resources/pdf/td-sheets/session_5_td.pdf">PDF</a><a class="file-link" href="resources/markdown/td-sheets/session_5_td.md">Markdown</a></div>
+        </article>
+        <article class="resource-card" data-type="td" data-search="session 6 td javascript client side interaction variables functions events dom">
+          <div class="resource-head"><h3>TD 6 - JavaScript and DOM Interaction</h3><span class="tag td">TD</span></div>
+          <p>JavaScript variables, operators, functions, events, DOM updates, tracing, feature writing, and debugging.</p>
+          <div class="link-row"><a class="file-link" href="resources/pdf/td-sheets/session_6_td.pdf">PDF</a><a class="file-link" href="resources/markdown/td-sheets/session_6_td.md">Markdown</a></div>
+        </article>
+      </div>
+    </section>
+  </div>
+
+<script>
+const searchInput = document.getElementById("searchInput");
+const filterButtons = Array.from(document.querySelectorAll("[data-filter]"));
+const cards = Array.from(document.querySelectorAll(".resource-card"));
+const sections = Array.from(document.querySelectorAll("[data-section]"));
+let activeFilter = "all";
+
+filterButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    activeFilter = button.dataset.filter;
+    filterButtons.forEach((item) => item.classList.toggle("active", item === button));
+    applyFilters();
+  });
+});
+
+searchInput.addEventListener("input", applyFilters);
+
+function applyFilters() {
+  const query = searchInput.value.trim().toLowerCase();
+  let visibleCount = 0;
+  cards.forEach((card) => {
+    const matchesType = activeFilter === "all" || card.dataset.type === activeFilter;
+    const haystack = `${card.textContent} ${card.dataset.search || ""}`.toLowerCase();
+    const matchesSearch = !query || haystack.includes(query);
+    const visible = matchesType && matchesSearch;
+    card.hidden = !visible;
+    if (visible) visibleCount += 1;
+  });
+  sections.forEach((section) => {
+    section.hidden = !Array.from(section.querySelectorAll(".resource-card")).some((card) => !card.hidden);
+  });
+  document.body.classList.toggle("no-results", visibleCount === 0);
+}
+</script>
+</body>
+</html>

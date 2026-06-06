@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="../resources/assets/favicon.ico">
+<title>Web Dev Exam Lab — Revision &amp; Assessment Platform</title>
+<style>
+:root{
+  --bg:#eef4f6;--bg2:#e4edf0;--panel:#ffffff;--panel2:#f7fafb;
+  --ink:#20313c;--muted:#637886;--faint:#8aa0ac;--line:#d5e1e8;--line2:#e7eef2;
+  --teal:#0f7f79;--blue:#2166a5;--coral:#c85d4a;--amber:#a86e17;--green:#25764a;--purple:#6d4aa8;--pink:#b8456f;
+  --soft-teal:#e2f3f1;--soft-blue:#e7f0fa;--soft-coral:#fae8e3;--soft-amber:#fbf0d9;--soft-green:#e5f3ea;--soft-purple:#efe8f8;--soft-pink:#fbe6ee;
+  --shadow:0 14px 34px rgba(35,52,63,.10);--shadow-sm:0 4px 12px rgba(35,52,63,.07);
+  --radius:12px;
+  --code-bg:#0f1b26;--code-ink:#d6e4ef;
+}
+[data-theme="dark"]{
+  --bg:#0e1620;--bg2:#0a1119;--panel:#16212e;--panel2:#1c2937;
+  --ink:#e6eef4;--muted:#9fb3c2;--faint:#6e8595;--line:#26323f;--line2:#202b37;
+  --teal:#2bb3a8;--blue:#5295e0;--coral:#e7806c;--amber:#d8a445;--green:#46b97e;--purple:#a07fe0;--pink:#e07298;
+  --soft-teal:#13302e;--soft-blue:#13263a;--soft-coral:#33201b;--soft-amber:#332a17;--soft-green:#15301f;--soft-purple:#241c34;--soft-pink:#331e28;
+  --shadow:0 16px 40px rgba(0,0,0,.45);--shadow-sm:0 4px 14px rgba(0,0,0,.35);
+  --code-bg:#0a131b;--code-ink:#cfe0ec;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;min-height:100vh;color:var(--ink);background:linear-gradient(180deg,var(--bg),var(--bg2));font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif;font-size:15px;line-height:1.5;transition:background .3s,color .3s}
+a{color:var(--teal);text-decoration:none}
+button,input,select{font:inherit;color:inherit}
+h1,h2,h3,h4{margin:0;line-height:1.2}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:6px}
+.wrap{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:18px 0 70px}
+.appbar{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:14px}
+.brand{display:flex;gap:11px;align-items:center}
+.brand-logo{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,var(--coral),var(--amber));flex-shrink:0}
+.brand b{font-size:17px;display:block}
+.brand small{color:var(--muted);font-size:12px;font-weight:700}
+.appbar-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{display:inline-flex;gap:7px;align-items:center;justify-content:center;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:9px;padding:9px 13px;font-weight:700;font-size:13px;cursor:pointer;transition:.15s}
+.btn:hover{border-color:var(--teal);background:var(--panel2)}
+.btn svg{width:15px;height:15px}
+.btn.primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn.primary:hover{filter:brightness(1.07)}
+.btn.coral{background:var(--coral);color:#fff;border-color:var(--coral)}
+.btn.ghost{background:transparent}
+.btn.sm{padding:6px 10px;font-size:12px}
+.btn.icon{padding:9px;width:38px;height:38px}
+.btn.danger:hover{border-color:var(--coral);color:var(--coral)}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.chip{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:5px 11px;font-size:11.5px;font-weight:800;background:var(--panel2);color:var(--muted);border:1px solid var(--line)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm)}
+.pad{padding:18px}
+.muted{color:var(--muted)}.small{font-size:12px}
+.divider{height:1px;background:var(--line);margin:14px 0}
+.grid{display:grid;gap:14px}
+.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.tabs{display:flex;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:6px;margin-bottom:16px;flex-wrap:wrap}
+.tab{flex:1;min-width:120px;text-align:center;padding:10px;border-radius:8px;font-weight:800;font-size:13px;color:var(--muted);cursor:pointer;border:1px solid transparent}
+.tab:hover{background:var(--panel2);color:var(--ink)}
+.tab.active{background:var(--soft-teal);color:var(--teal);border-color:color-mix(in srgb,var(--teal) 25%,transparent)}
+.stat{padding:15px;position:relative}
+.stat .lbl{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.stat .val{font-size:27px;font-weight:800;margin:5px 0 2px;letter-spacing:-.02em}
+.stat .sub{font-size:11.5px;color:var(--muted)}
+.filterbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.filterbar input[type=search]{flex:1;min-width:200px;border:1px solid var(--line);background:var(--panel);border-radius:9px;padding:9px 12px}
+select{border:1px solid var(--line);background:var(--panel);border-radius:9px;padding:9px 11px}
+.seg{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:4px;flex-wrap:wrap}
+.seg button{border:0;background:transparent;color:var(--muted);font-weight:800;font-size:12px;padding:6px 12px;border-radius:999px;cursor:pointer}
+.seg button.active{background:var(--teal);color:#fff}
+.task{margin-bottom:12px;overflow:hidden}
+.task-head{display:flex;gap:12px;align-items:flex-start;padding:15px 16px;cursor:pointer}
+.task-head:hover{background:var(--panel2)}
+.task-num{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-weight:800;font-size:12px;flex-shrink:0;background:var(--panel2);color:var(--muted);border:1px solid var(--line)}
+.task-tt{flex:1;min-width:0}
+.task-tt b{font-size:14.5px;display:block;margin-bottom:5px}
+.task-meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tag{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:3px 9px;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.02em}
+.tag.cat{background:var(--soft-blue);color:var(--blue)}
+.tag.html{background:var(--soft-coral);color:var(--coral)}
+.tag.css{background:var(--soft-teal);color:var(--teal)}
+.tag.responsive{background:var(--soft-blue);color:var(--blue)}
+.tag.debug{background:var(--soft-amber);color:var(--amber)}
+.tag.project{background:var(--soft-green);color:var(--green)}
+.tag.mixed{background:var(--soft-purple);color:var(--purple)}
+.tag.d-Hard{background:var(--soft-green);color:var(--green)}
+.tag.d-VeryHard{background:var(--soft-amber);color:var(--amber)}
+.tag.d-Expert{background:var(--soft-coral);color:var(--coral)}
+.tag.done{background:var(--soft-green);color:var(--green)}
+.tag.partial{background:var(--soft-amber);color:var(--amber)}
+.tag.missed{background:var(--soft-coral);color:var(--coral)}
+.task-caret{color:var(--muted);transition:transform .2s;flex-shrink:0;margin-top:4px}
+.task.open .task-caret{transform:rotate(90deg)}
+.task-body{display:none;border-top:1px solid var(--line);padding:16px;background:var(--panel2)}
+.task.open .task-body{display:block;animation:fade .25s}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.block{margin-bottom:14px}
+.block h4{font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--faint);margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.block p{margin:0}
+.block ul{margin:0;padding-left:20px}
+.block li{margin:4px 0}
+.statement{font-size:14.5px;line-height:1.6}
+code,.mono{font-family:Consolas,"Courier New",monospace}
+pre{background:var(--code-bg);color:var(--code-ink);padding:13px 15px;border-radius:10px;overflow-x:auto;font-family:Consolas,"Courier New",monospace;font-size:12.5px;line-height:1.55;margin:8px 0}
+.inline-code{background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:12.5px}
+.rubric{width:100%;border-collapse:collapse;font-size:12.5px}
+.rubric td{padding:6px 9px;border-bottom:1px solid var(--line);vertical-align:top}
+.rubric td:last-child{text-align:right;font-weight:800;white-space:nowrap;color:var(--teal)}
+.hint{background:var(--soft-amber);border:1px solid color-mix(in srgb,var(--amber) 28%,transparent);border-radius:9px;padding:10px 12px;margin:6px 0;font-size:13px}
+.solution{border:1px dashed var(--teal);border-radius:10px;padding:0;overflow:hidden}
+.solution>summary{cursor:pointer;padding:11px 14px;font-weight:800;color:var(--teal);list-style:none;display:flex;gap:8px;align-items:center}
+.solution>summary::-webkit-details-marker{display:none}
+.solution[open]>summary{border-bottom:1px solid var(--line)}
+.solution .sol-inner{padding:14px}
+.self-grade{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px solid var(--line);align-items:center}
+.self-grade .lbl{font-size:12px;font-weight:800;color:var(--muted)}
+.exam-bar{position:sticky;top:0;z-index:50;display:none;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:12px;margin-bottom:16px;box-shadow:var(--shadow)}
+body.in-exam .exam-bar{display:flex}
+.exam-timer{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums}
+.exam-timer.warn{color:#ffb4a3}
+.progressdots{display:flex;gap:5px;flex-wrap:wrap}
+.progressdots i{width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,.25)}
+.progressdots i.done{background:var(--green)}
+.progressdots i.partial{background:var(--amber)}
+.progressdots i.missed{background:var(--coral)}
+.progressdots i.cur{outline:2px solid #fff;outline-offset:1px}
+.bar{height:9px;border-radius:999px;background:var(--line2);overflow:hidden}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--blue));border-radius:999px;transition:width .5s}
+.barrow{display:flex;align-items:center;gap:10px;margin:8px 0}
+.barrow .nm{flex:1;font-size:13px;font-weight:600}
+.barrow .pct{width:42px;text-align:right;font-size:12px;font-weight:800;color:var(--muted)}
+.view{display:none}.view.active{display:block;animation:fade .25s}
+.empty{text-align:center;color:var(--muted);padding:30px;border:1px dashed var(--line);border-radius:12px}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(160%);background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:10px;font-weight:700;font-size:13px;box-shadow:var(--shadow);z-index:300;transition:transform .35s;max-width:90vw}
+.toast.show{transform:translateX(-50%) translateY(0)}
+label.fl{font-size:12px;font-weight:800;color:var(--muted);display:block;margin-bottom:5px}
+.result-ring{--p:0;--c:var(--teal);width:150px;height:150px;border-radius:50%;background:conic-gradient(var(--c) calc(var(--p)*1%),var(--line2) 0);display:grid;place-items:center;position:relative;margin:0 auto}
+.result-ring::before{content:"";position:absolute;inset:14px;border-radius:50%;background:var(--panel)}
+.result-ring .rc{position:relative;text-align:center}
+.result-ring .rc b{font-size:34px;font-weight:800;display:block}
+.result-ring .rc span{font-size:11px;color:var(--muted);font-weight:800;text-transform:uppercase}
+@media(max-width:900px){.cols-4{grid-template-columns:repeat(2,1fr)}.cols-3{grid-template-columns:1fr}}
+@media(max-width:620px){.cols-2,.cols-4{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="appbar">
+    <div class="brand">
+      <div class="brand-logo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M8 7h8M8 11h8M8 15h5M5 3h14v18H5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div><b>Web Dev Exam Lab</b><small>Revision &amp; assessment platform · Web Techniques</small></div>
+    </div>
+    <div class="appbar-actions">
+      <span class="chip" id="bankChip">📚 <b id="bankCount">0</b>&nbsp;tasks</span>
+      <a class="btn sm" href="web_development_progress_tracker.html"><svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Tracker</a>
+      <a class="btn sm" href="../index.html">Hub</a>
+      <button class="btn icon" id="themeToggle" aria-label="Theme" title="Toggle dark / light"><svg id="themeIc" viewBox="0 0 24 24" fill="none" width="17" height="17"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
+    </div>
+  </div>
+
+  <div class="exam-bar" id="examBar">
+    <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+      <span style="font-weight:800">EXAM MODE</span>
+      <span class="exam-timer" id="examTimer">00:00</span>
+      <span id="examPos" class="small"></span>
+    </div>
+    <div class="progressdots" id="examDots"></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn sm" id="examPrev">‹ Prev</button>
+      <button class="btn sm" id="examNext">Next ›</button>
+      <button class="btn sm coral" id="examFinish">Finish</button>
+    </div>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <div class="tab active" data-tab="browse">📖 Task Bank</div>
+    <div class="tab" data-tab="exam">⏱️ Exam Simulation</div>
+    <div class="tab" data-tab="stats">📊 Progress &amp; Mistakes</div>
+  </div>
+
+  <div id="view-browse" class="view active"></div>
+  <div id="view-exam" class="view"></div>
+  <div id="view-stats" class="view"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="exam_lab_tasks.js"></script>
+</body>
+</html>
